@@ -8,7 +8,7 @@ Before using TaskEnforcerX, you need to install the required libraries and depen
 
 ## Installation
 
-You can download the executable (exe) file of TaskEnforcerX from the following link: [[TaskEnforcerX.zip](https://drive.google.com/file/d/1ponJ7CN_rEhcjMFv2mQkZjsoCfyh4O0H/view?usp=drive_link)]
+You can download the executable (exe) file of TaskEnforcerX from the following link: [TaskEnforcerX.zip](https://drive.google.com/file/d/1ponJ7CN_rEhcjMFv2mQkZjsoCfyh4O0H/view?usp=drive_link)
 
 ## Configuration
 
@@ -33,7 +33,7 @@ You can view a demonstration of TaskEnforcerX in action above.
 
 ## Support and Contact
 
-For support, discussions, and updates, please join our Discord channel: [[Discord Invite Link](https://discord.gg/CPCcxRQn2B)]
+For support, discussions, and updates, please join our Discord channel: [Discord Invite Link](https://discord.gg/CPCcxRQn2B)
 
 ## Versioning
 
