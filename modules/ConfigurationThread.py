@@ -707,9 +707,9 @@ class ConfigurationThread(QThread):
                     # print("Locating the Alliance War Window")
                     self.log = "Locating the Alliance War Window"
                     self.invokeDeviceConsole(self.log)
-                else:
-                    self.log = "Alliance War window has been successfully located"
-                    self.invokeDeviceConsole(self.log)
+                # else:
+                #     self.log = "Alliance War window has been successfully located"
+                #     self.invokeDeviceConsole(self.log)
                 # print("Swipe ", swipe_direction, swipe_iteration)
                 sleep(1)
                 # Scan the rallies
