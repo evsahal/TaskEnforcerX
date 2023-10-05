@@ -1,9 +1,9 @@
 #################################################################################
-#Copyright (c) 2023, MwoNuZzz
-#All rights reserved.
+# Copyright (c) 2023, MwoNuZzz
+# All rights reserved.
 #
-#This source code is licensed under the GNU General Public License as found in the
-#LICENSE file in the root directory of this source tree.
+# This source code is licensed under the GNU General Public License as found in the
+# LICENSE file in the root directory of this source tree.
 #################################################################################
 
 import time
@@ -825,11 +825,12 @@ class ConfigurationThread(QThread):
         # self.invokeEmulatorConsole(self.log)
         if self.device_emu is not None and trial_expired is False:
             img_res = self.device_emu.shell(f'wm size')
-            img_res_type = img_res.split('x')[1].replace("\n", "") + "p"
-            img_lib_path = "images/evony/" + img_res_type + "/"
-            device_res = img_res.split('x')[1].replace("\n", "")
-            print("Device resolution ", device_res)
-            # print(img_lib_path)
+            screen_res = img_res.split(': ')[1].replace("\n", "")
+            if screen_res == "960x540" or screen_res == "540x960":
+                device_res = "540"
+                img_lib_path = f"images/evony/{device_res}p/"
+                # print(f"img_lib_path: {img_lib_path}")
+
             if device_res == "540":
                 self.log = "Successfully started " + self.emulator_name + " on port " + self.emulator_port
                 self.invokeEmulatorConsole(self.log)
