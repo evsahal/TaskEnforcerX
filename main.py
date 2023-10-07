@@ -1,9 +1,9 @@
 #################################################################################
-#Copyright (c) 2023, MwoNuZzz
-#All rights reserved.
+# Copyright (c) 2023, MwoNuZzz
+# All rights reserved.
 #
-#This source code is licensed under the GNU General Public License as found in the
-#LICENSE file in the root directory of this source tree.
+# This source code is licensed under the GNU General Public License as found in the
+# LICENSE file in the root directory of this source tree.
 #################################################################################
 
 import sys
@@ -1247,6 +1247,8 @@ class MainWindow(QMainWindow):
                         monsters['logic'] = 1
                         monsters['img_540p'] = monster['img_540p']
                         monsters['img_1080p'] = monster['img_1080p']
+                        monsters['img_threshold'] = monster['img_threshold']
+                        monsters['click_pos'] = monster['click_pos']
                         monsters['level'] = monster['levels'][0]['level']
                         monsters['name'] = monster['levels'][0]['name']
                         monsters['preview_name'] = monster['preview_name']
@@ -1265,6 +1267,8 @@ class MainWindow(QMainWindow):
                             monsters['logic'] = monster['monster_logic_id']
                             monsters['img_540p'] = monster['img_540p']
                             monsters['img_1080p'] = monster['img_1080p']
+                            monsters['img_threshold'] = monster['img_threshold']
+                            monsters['click_pos'] = monster['click_pos']
                             monsters['preview_name'] = monster['preview_name']
                             for level in monster['levels']:
                                 if level['level'] == combobox_lv - 1:
