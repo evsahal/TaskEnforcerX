@@ -14,8 +14,9 @@ from boss_monster, monster_level_info,monster_image where boss_monster.monster_i
 boss_monster.id = monster_level_info.boss_monster_id """
 
 get_all_normal_monster_info_query = """select normal_monster.id,normal_monster.monster_name,normal_monster.system, 
-monster_image.preview_image,monster_image.img_540p, monster_image.img_1080p,monster_image.id from normal_monster, 
-monster_image where normal_monster.monster_image_id = monster_image.id """
+monster_image.preview_image,monster_image.img_540p, monster_image.img_1080p, monster_image.img_threshold,
+monster_image.click_pos,monster_image.id from normal_monster, monster_image where normal_monster.monster_image_id = 
+monster_image.id"""
 
 get_all_scoutables_info_query = """select scoutables.id,scoutables.scoutables_name,scoutables.type,scoutables.system, 
 monster_image.preview_image,monster_image.img_540p, monster_image.img_1080p,monster_image.id from scoutables,

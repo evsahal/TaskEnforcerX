@@ -102,7 +102,8 @@ def getAllNormalMonsterData():
     normal_monster_list = []
     for monster in normal_monster_table:
         tmp_dict = {'id': monster[0], 'name': monster[1], 'system': monster[2], 'preview_image': monster[3],
-                    'img_540p': monster[4], 'img_1080p': monster[5], 'img_id': monster[6]}
+                    'img_540p': monster[4], 'img_1080p': monster[5], 'img_threshold': monster[6],
+                    'click_pos': json.loads(monster[7]), 'img_id': monster[8]}
         normal_monster_list.append(tmp_dict)
     return normal_monster_list
 

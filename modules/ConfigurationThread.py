@@ -292,7 +292,7 @@ class ConfigurationThread(QThread):
         global img_lib_path
         global device_res
         controls = self.emulator_control['world_map_scan']
-        # print(controls)
+        #print(controls['boss_scan']['monsters'])
         scan_list = []
         # When Boss Scan is enabled
         if controls['enable_boss_scan']:

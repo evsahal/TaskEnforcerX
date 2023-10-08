@@ -1226,6 +1226,8 @@ class MainWindow(QMainWindow):
                     if monster['name'] == checkbox.text():
                         monsters['img_540p'] = monster['img_540p']
                         monsters['img_1080p'] = monster['img_1080p']
+                        monsters['img_threshold'] = monster['img_threshold']
+                        monsters['click_pos'] = monster['click_pos']
                         monsters['name'] = monster['name']
                         break
                 monster_list.append(monsters)

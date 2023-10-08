@@ -249,7 +249,7 @@ def monsterScan(self, item, controls, center_x, center_y, scan_list, img_lib_pat
         # print("No monster found. wrong match. skipping")
         self.invokeDeviceConsole("Wrong match found. Hence skipping")
         time.sleep(1)
-        self.device_emu.shell(f'input tap ' + str(center_x) + ' ' + str(center_y + 25))
+        self.device_emu.shell(f'input tap ' + str(center_x+item['click_pos']['x']) + ' ' + str(center_y + item['click_pos']['y']))
         return False, None
     self.invokeDeviceConsole("Normal monster match verified")
     # Open the share window to read the cords
@@ -258,8 +258,8 @@ def monsterScan(self, item, controls, center_x, center_y, scan_list, img_lib_pat
         img_lib_path + 'monsters/boss_share_option.png'))
     if not share_btn[0]:
         # Deselect the selection
-        self.device_emu.shell(f'input tap ' + str(center_x) + ' ' + str(
-            center_y + 0))  # +20 to avoid wrong clicks on some cases(get base area)
+        self.device_emu.shell(f'input tap ' + str(center_x+item['click_pos']['x']) + ' ' + str(
+            center_y + item['click_pos']['y']))
         return False, None
     # When share btn is present
     self.device_emu.shell(f'input tap ' + str(share_btn[1]) + ' ' + str(share_btn[2]))
@@ -299,7 +299,7 @@ def bossScan(self, item, controls, center_x, center_y, scan_list, img_lib_path):
     flag = True if item['logic'] == 1 else False
     monster = item if item['logic'] == 1 else {}
     if item['logic'] == 2 or item['logic'] == 3:
-        levels = [monster for monster in scan_list if
+        levels = [monster for monster in scan_list if monster['type'] == 'boss_scan' and
                   monster['preview_name'] == item['preview_name']]
         for level in levels:
             level_img = cv2.imread(
