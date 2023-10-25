@@ -1,8 +1,0 @@
-PyQt5==5.15.9
-opencv-python==4.8.1.78
-pure-python-adb==0.3.0.dev0
-pytesseract==0.3.10
-requests==2.31.0
-pytz==2023.3.post1
-scikit-image==0.21.0
-lxml==4.9.3
