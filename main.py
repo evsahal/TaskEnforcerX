@@ -277,9 +277,12 @@ class MainWindow(QMainWindow):
     def loadProfileNames(self):
         self.all_profiles = getAllProfiles()
         for index in range(self.total_emulator):
-            load_profiles_combo = self.findChild(QComboBox, f"load_profile_combo_{str(index + 1)}")
-            combo_box_profile = self.findChild(QComboBox, f"comboBoxProfile_{str(index + 1)}")
-            emu_profile = self.findChild(QComboBox, f"emu_profile_{str(index + 1)}")
+            # load_profiles_combo = self.findChild(QComboBox, f"load_profile_combo_{str(index + 1)}")
+            load_profiles_combo = getattr(self.ui, f"load_profile_combo_{(index+1)}")
+            # combo_box_profile = self.findChild(QComboBox, f"comboBoxProfile_{str(index + 1)}")
+            combo_box_profile = getattr(self.ui, f"comboBoxProfile_{(index+1)}")
+            # emu_profile = self.findChild(QComboBox, f"emu_profile_{str(index + 1)}")
+            emu_profile = getattr(self.ui, f"emu_profile_{(index + 1)}")
             load_profiles_combo.clear()
             combo_box_profile.clear()
             emu_profile.clear()
@@ -350,15 +353,18 @@ class MainWindow(QMainWindow):
     def loadWorldMapScanUIControls(self):
         for index in range(1, self.total_emulator + 1):
             # World Map Scan Page Buttons
-            map_scan_btn_widgets = self.findChild(QWidget, "map_scan_btn_widgets_" + str(index))
+            # map_scan_btn_widgets = self.findChild(QWidget, "map_scan_btn_widgets_" + str(index))
+            map_scan_btn_widgets = getattr(self.ui, f"map_scan_btn_widgets_{index}")
             nav_buttons = map_scan_btn_widgets.findChildren(QPushButton)
             for btn_index, button in enumerate(nav_buttons):
                 if btn_index == 0:
                     button.setStyleSheet("background-color: rgb(161, 110, 235);border-radius: 10px;")
                 button.clicked.connect(self.MapScanButtonClick)
             # World Map Scan Page Navigation Buttons
-            next_page = self.findChild(QPushButton, "map_scan_next_" + str(index))
-            previous_page = self.findChild(QPushButton, "map_scan_previous_" + str(index))
+            # next_page = self.findChild(QPushButton, "map_scan_next_" + str(index))
+            next_page = getattr(self.ui, f"map_scan_next_{index}")
+            # previous_page = self.findChild(QPushButton, "map_scan_previous_" + str(index))
+            previous_page = getattr(self.ui, f"map_scan_previous_{index}")
             next_page.clicked.connect(lambda: self.MapScanNavButtonClick(True))
             previous_page.clicked.connect(lambda: self.MapScanNavButtonClick(False))
 
@@ -402,11 +408,16 @@ class MainWindow(QMainWindow):
     def addQueueTraining(self, index):
         global troops_training
         print(index)
-        table = self.findChild(QTableWidget, "troop_queue_table_" + str(index))
-        troop_type = self.findChild(QComboBox, "troop_type_" + str(index))
-        troop_tier = self.findChild(QComboBox, "troop_tier_" + str(index))
-        train_times = self.findChild(QLineEdit, "batches_" + str(index))
-        total_troop_per_batch = self.findChild(QLineEdit, "total_batches_" + str(index))
+        # table = self.findChild(QTableWidget, "troop_queue_table_" + str(index))
+        table = getattr(self.ui, f"troop_queue_table_{index}")
+        # troop_type = self.findChild(QComboBox, "troop_type_" + str(index))
+        troop_type = getattr(self.ui, f"troop_type_{index}")
+        # troop_tier = self.findChild(QComboBox, "troop_tier_" + str(index))
+        troop_tier = getattr(self.ui, f"troop_tier_{index}")
+        # train_times = self.findChild(QLineEdit, "batches_" + str(index))
+        train_times = getattr(self.ui, f"batches_{index}")
+        # total_troop_per_batch = self.findChild(QLineEdit, "total_batches_" + str(index))
+        total_troop_per_batch = getattr(self.ui, f"total_batches_{index}")
         row_position = table.rowCount() - 1
         if troop_type.currentText() == "" or troop_tier.currentText() == "" or train_times.text() == "":
             openDialog("Some Fields are not selected")
@@ -487,7 +498,8 @@ class MainWindow(QMainWindow):
         table_index = self.sender().index
         args = self.sender().args
         row_index = args['index']
-        table = self.findChild(QTableWidget, "troop_queue_table_" + str(table_index))
+        # table = self.findChild(QTableWidget, "troop_queue_table_" + str(table_index))
+        table = getattr(self.ui, f"troop_queue_table_{table_index}")
         if args['type'] == "remove":
             try:
                 delete_button = table.cellWidget(row_index, 9)
@@ -559,7 +571,8 @@ class MainWindow(QMainWindow):
     def removeQueueTraining(self, index):
         global troops_training
         try:
-            table = self.findChild(QTableWidget, "troop_queue_table_" + str(index))
+            # table = self.findChild(QTableWidget, "troop_queue_table_" + str(index))
+            table = getattr(self.ui, f"troop_queue_table_{index}")
             button = self.sender()
             row = table.indexAt(button.pos()).row()
             troop_type = table.item(row, 0).text()
@@ -611,19 +624,19 @@ class MainWindow(QMainWindow):
             loading_progress += index
             splash_progress.emit("Loading user profiles...", loading_progress)
             # load configuration fields
-            self.findChild(QLineEdit, f"emu_name_{str(profile[0])}").setText(profile[1])
-            self.findChild(QLineEdit, f"emu_port_{str(profile[0])}").setText(str(profile[2]))
-            self.findChild(QComboBox, f"comboBoxMode_{str(profile[0])}").setCurrentText(str(profile[3]))
+            getattr(self.ui, f"emu_name_{profile[0]}").setText(profile[1])
+            getattr(self.ui, f"emu_port_{profile[0]}").setText(str(profile[2]))
+            getattr(self.ui, f"comboBoxMode_{profile[0]}").setCurrentText(str(profile[3]))
             check_profile_exist = [values['name'] for values in self.all_profiles if values['name'] == profile[4]]
             if len(check_profile_exist) != 0:
-                self.findChild(QComboBox, f"emu_profile_{str(profile[0])}").setCurrentText(str(profile[4]))
+                getattr(self.ui, f"emu_profile_{profile[0]}").setCurrentText(str(profile[4]))
 
     # Load Monster Logics in settings
     # ///////////////////////////////////////////////////////////////
     def loadBlackMarketControls(self):
         global widgets
         for emulator_index in range(self.total_emulator):
-            #buy_items_frame = self.findChild(QFrame, "buy_items_frame_" + str(emulator_index + 1))
+            # buy_items_frame = self.findChild(QFrame, "buy_items_frame_" + str(emulator_index + 1))
             buy_items_frame = getattr(self.ui, f"buy_items_frame_{(emulator_index + 1)}")
             items = buy_items_frame.findChildren(QCheckBox)
             for item in items:
@@ -895,9 +908,10 @@ class MainWindow(QMainWindow):
                     vert_layout.addWidget(combo_box)
                     other_monster_layout.addItem(vert_layout)
 
-            self.findChild(QFrame, "boss_monster_scan_frame_" + str(emulator_index + 1)).setLayout(boss_monster_layout)
-            self.findChild(QFrame, "other_monster_scan_frame_" + str(emulator_index + 1)).setLayout(
-                other_monster_layout)
+            # self.findChild(QFrame, "boss_monster_scan_frame_" + str(emulator_index + 1)).setLayout(boss_monster_layout)
+            getattr(self.ui, f"boss_monster_scan_frame_{(emulator_index + 1)}").setLayout(boss_monster_layout)
+            # self.findChild(QFrame, "other_monster_scan_frame_" + str(emulator_index + 1)).setLayout(other_monster_layout)
+            getattr(self.ui, f"other_monster_scan_frame_{(emulator_index + 1)}").setLayout(other_monster_layout)
 
     def loadMonsterControlsJoinRally(self):
         global widgets
@@ -978,10 +992,12 @@ class MainWindow(QMainWindow):
                     vert_layout.addWidget(combo_box)
                     event_monster_combo_layout.addItem(vert_layout)
 
-            self.findChild(QFrame, "boss_monster_body_frame_" + str(emulator_index + 1)).setLayout(boss_monster_layout)
-            self.findChild(QFrame, "event_monster_body_frame_" + str(emulator_index + 1)).setLayout(
-                event_monster_layout)
-            self.findChild(QFrame, "event_monster_combo_body_frame_" + str(emulator_index + 1)).setLayout(
+            # self.findChild(QFrame, "boss_monster_body_frame_" + str(emulator_index + 1)).setLayout(boss_monster_layout)
+            getattr(self.ui, f"boss_monster_body_frame_{(emulator_index + 1)}").setLayout(boss_monster_layout)
+            # self.findChild(QFrame, "event_monster_body_frame_" + str(emulator_index + 1)).setLayout(event_monster_layout)
+            getattr(self.ui, f"event_monster_body_frame_{(emulator_index + 1)}").setLayout(event_monster_layout)
+            # self.findChild(QFrame, "event_monster_combo_body_frame_" + str(emulator_index + 1)).setLayout(event_monster_combo_layout)
+            getattr(self.ui, f"event_monster_combo_body_frame_{(emulator_index + 1)}").setLayout(
                 event_monster_combo_layout)
 
     def setUpMoreActivitiesFrames(self):
@@ -1049,18 +1065,21 @@ class MainWindow(QMainWindow):
     def switchRunButton(self):
         global widgets
         thread_index = self.sender().index
-        run_btn = self.findChild(QPushButton, "emu_start_" + str(thread_index))
+        # run_btn = self.findChild(QPushButton, "emu_start_" + str(thread_index))
+        run_btn = getattr(self.ui, f"emu_start_{thread_index}")
         print("Run Button text:: ", run_btn.text())
         if run_btn.text() == "Start":
             # Change template Stop
             print("Changing to stop button:::")
             run_btn.setText("Stop")
-            led = self.findChild(QLabel, "emu_led_" + str(thread_index))
+            # led = self.findChild(QLabel, "emu_led_" + str(thread_index))
+            led = getattr(self.ui, f"emu_led_{thread_index}")
             led.setPixmap(QPixmap(u":/extra icons/images/extra icons/green-led-on.png"))
         elif run_btn.text() == "Stop":
             # Change template to run
             run_btn.setText("Start")
-            led = self.findChild(QLabel, "emu_led_" + str(thread_index))
+            # led = self.findChild(QLabel, "emu_led_" + str(thread_index))
+            led = getattr(self.ui, f"emu_led_{thread_index}")
             led.setPixmap(QPixmap(u":/extra icons/images/extra icons/red-led-on.png"))
             self.thread[thread_index].is_running = False
             self.thread[thread_index].device_emu = None
@@ -1068,13 +1087,15 @@ class MainWindow(QMainWindow):
     # RESTART MODE
     def invokeSwitchRun(self):
         index = self.sender().index
-        self.findChild(QPushButton, "emu_start_" + str(index)).click()
+        # self.findChild(QPushButton, "emu_start_" + str(index)).click()
+        getattr(self.ui, f"emu_start_{index}").click()
 
     # Press Emulator Start & Stop with config run btn
     def invokeStartAndStop(self):
         btn = self.sender()
         index = int(extract_numbers_from_string(btn.objectName()))
-        self.findChild(QPushButton, "emu_start_" + str(index)).click()
+        # self.findChild(QPushButton, "emu_start_" + str(index)).click()
+        getattr(self.ui, f"emu_start_{index}").click()
 
     # STARTING & STOPPING EMULATOR RUN(THREADING)
     # ///////////////////////////////////////////////////////////////
@@ -1089,15 +1110,20 @@ class MainWindow(QMainWindow):
             self.thread[index].quit()
             icon = QIcon()
             icon.addFile(u":/icons/images/icons/cil-media-play.png", QSize(), QIcon.Normal, QIcon.Off)
-            self.findChild(QPushButton, "emu_run_" + str(index)).setIcon(icon)
+            # self.findChild(QPushButton, "emu_run_" + str(index)).setIcon(icon)
+            getattr(self.ui, f"emu_run_{index}").setIcon(icon)
+
         # START BUTTON
         elif btn_name == "Start":
             icon = QIcon()
             icon.addFile(u":/icons/images/icons/cil-media-stop.png", QSize(), QIcon.Normal, QIcon.Off)
-            self.findChild(QPushButton, "emu_run_" + str(index)).setIcon(icon)
+            # self.findChild(QPushButton, "emu_run_" + str(index)).setIcon(icon)
+            getattr(self.ui, f"emu_run_{index}").setIcon(icon)
 
-            emulator_port = self.findChild(QLineEdit, f"emu_port_{str(index)}").text()
-            emulator_name = self.findChild(QLineEdit, f"emu_name_{str(index)}").text()
+            # emulator_port = self.findChild(QLineEdit, f"emu_port_{str(index)}").text()
+            emulator_port = getattr(self.ui, f"emu_port_{index}").text()
+            # emulator_name = self.findChild(QLineEdit, f"emu_name_{str(index)}").text()
+            emulator_name = getattr(self.ui, f"emu_name_{index}").text()
             config = {"emulator_port": emulator_port, "emulator_name": emulator_name,
                       "emulator_control": self.getEmulatorControls(index)}
 
@@ -1115,8 +1141,10 @@ class MainWindow(QMainWindow):
         # index = self.sender().index
         # print("Inside emulator controls:",index)
         emu_dict = {}
-        emu_dict['mode'] = str(self.findChild(QComboBox, "comboBoxMode_" + str(index)).currentText())
-        emu_dict['profile'] = str(self.findChild(QComboBox, "comboBoxProfile_" + str(index)).currentText())
+        # emu_dict['mode'] = str(self.findChild(QComboBox, "comboBoxMode_" + str(index)).currentText())
+        emu_dict['mode'] = str(getattr(self.ui, f"comboBoxMode_{index}").currentText())
+        # emu_dict['profile'] = str(self.findChild(QComboBox, "comboBoxProfile_" + str(index)).currentText())
+        emu_dict['profile'] = str(getattr(self.ui, f"comboBoxProfile_{index}").currentText())
         emu_dict['game_settings'] = self.getGameSettings(index)
         if emu_dict['mode'] == "Join Rally":
             emu_dict['join_rally'] = self.getJoinRallyControls(index)
@@ -1135,13 +1163,14 @@ class MainWindow(QMainWindow):
         return emu_dict
 
     def getGameSettings(self, index):
-        add_break = {'add_break': self.findChild(QCheckBox, "add_break_" + str(index)).isChecked(),
-                     'value': {'from': QTime.fromString(
-                         self.findChild(QTimeEdit, "break_from_" + str(index)).time().toString("hh:mm"), "hh:mm"),
-                         'to': QTime.fromString(
-                             self.findChild(QTimeEdit, "break_to_" + str(index)).time().toString("hh:mm"),
-                             "hh:mm")}}
-        game_settings = {'kick_timer': self.findChild(QSpinBox, "kick_timer_" + str(index)).value(),
+        getattr(self.ui, f"kick_timer_{index}")
+        add_break = {'add_break': getattr(self.ui, f"add_break_{index}").isChecked(),
+                     'value': {
+                         'from': QTime.fromString(getattr(self.ui, f"break_from_{index}").time().toString("hh:mm"),
+                                                  "hh:mm"),
+                         'to': QTime.fromString(getattr(self.ui, f"break_to_{index}").time().toString("hh:mm"),
+                                                "hh:mm")}}
+        game_settings = {'kick_timer': getattr(self.ui, f"kick_timer_{index}").value(),
                          'add_break': add_break}
         return game_settings
 
@@ -1169,16 +1198,26 @@ class MainWindow(QMainWindow):
         return controls
 
     def getWorldMapScanControls(self, index):
-        enable_boss_scan = self.findChild(QCheckBox, "enable_boss_scan_" + str(index))
-        enable_monster_scan = self.findChild(QCheckBox, "enable_monster_scan_" + str(index))
-        enable_tile_scan = self.findChild(QCheckBox, "enable_tile_scan_" + str(index))
-        enable_scoutables_scan = self.findChild(QCheckBox, "enable_scoutables_scan_" + str(index))
-        share_collective = self.findChild(QRadioButton, "world_map_scan_share_collective_" + str(index))
-        share_whisper = self.findChild(QRadioButton, "world_map_scan_share_whisper_" + str(index))
-        share_ac = self.findChild(QRadioButton, "world_map_scan_share_ac_" + str(index))
-        start_at_cords_option = self.findChild(QCheckBox, "world_map_scan_start_cords_" + str(index))
-        cords_x = self.findChild(QLineEdit, "world_map_scan_cords_x_" + str(index)).text()
-        cords_y = self.findChild(QLineEdit, "world_map_scan_cords_y_" + str(index)).text()
+        # enable_boss_scan = self.findChild(QCheckBox, "enable_boss_scan_" + str(index))
+        enable_boss_scan = getattr(self.ui, f"enable_boss_scan_{index}")
+        # enable_monster_scan = self.findChild(QCheckBox, "enable_monster_scan_" + str(index))
+        enable_monster_scan = getattr(self.ui, f"enable_monster_scan_{index}")
+        # enable_tile_scan = self.findChild(QCheckBox, "enable_tile_scan_" + str(index))
+        enable_tile_scan = getattr(self.ui, f"enable_tile_scan_{index}")
+        # enable_scoutables_scan = self.findChild(QCheckBox, "enable_scoutables_scan_" + str(index))
+        enable_scoutables_scan = getattr(self.ui, f"enable_scoutables_scan_{index}")
+        # share_collective = self.findChild(QRadioButton, "world_map_scan_share_collective_" + str(index))
+        share_collective = getattr(self.ui, f"world_map_scan_share_collective_{index}")
+        # share_whisper = self.findChild(QRadioButton, "world_map_scan_share_whisper_" + str(index))
+        share_whisper = getattr(self.ui, f"world_map_scan_share_whisper_{index}")
+        # share_ac = self.findChild(QRadioButton, "world_map_scan_share_ac_" + str(index))
+        share_ac = getattr(self.ui, f"world_map_scan_share_ac_{index}")
+        # start_at_cords_option = self.findChild(QCheckBox, "world_map_scan_start_cords_" + str(index))
+        start_at_cords_option = getattr(self.ui, f"world_map_scan_start_cords_{index}")
+        # cords_x = self.findChild(QLineEdit, "world_map_scan_cords_x_" + str(index)).text()
+        cords_x = getattr(self.ui, f"world_map_scan_cords_x_{index}").text()
+        # cords_y = self.findChild(QLineEdit, "world_map_scan_cords_y_" + str(index)).text()
+        cords_y = getattr(self.ui, f"world_map_scan_cords_y_{index}").text()
 
         world_map_scan_properties = {}
         world_map_scan_properties['share_collective'] = True if share_collective.isChecked() else False
@@ -1215,7 +1254,8 @@ class MainWindow(QMainWindow):
 
     def getScoutablesScanControls(self, index):
         controls = {}
-        scoutables_scan_frame = self.findChild(QFrame, "scoutables_scan_frame_" + str(index))
+        # scoutables_scan_frame = self.findChild(QFrame, "scoutables_scan_frame_" + str(index))
+        scoutables_scan_frame = getattr(self.ui, f"scoutables_scan_frame_{index}")
         # Fetching selected scoutables
         checkbox_list = scoutables_scan_frame.findChildren(QCheckBox)
         scout_list = []
@@ -1235,7 +1275,8 @@ class MainWindow(QMainWindow):
 
     def getMonsterScanControls(self, index):
         controls = {}
-        normal_monster_scan_frame = self.findChild(QFrame, "normal_monster_scan_frame_" + str(index))
+        # normal_monster_scan_frame = self.findChild(QFrame, "normal_monster_scan_frame_" + str(index))
+        normal_monster_scan_frame = getattr(self.ui, f"normal_monster_scan_frame_{index}")
         # Fetching selected monsters
         checkbox_list = normal_monster_scan_frame.findChildren(QCheckBox)
         monster_list = []
@@ -1256,8 +1297,10 @@ class MainWindow(QMainWindow):
 
     def getBossScanControls(self, index):
         controls = {}
-        boss_monster_scan_frame = self.findChild(QFrame, "boss_monster_scan_frame_" + str(index))
-        other_monster_scan_frame = self.findChild(QFrame, "other_monster_scan_frame_" + str(index))
+        # boss_monster_scan_frame = self.findChild(QFrame, "boss_monster_scan_frame_" + str(index))
+        boss_monster_scan_frame = getattr(self.ui, f"boss_monster_scan_frame_{index}")
+        # other_monster_scan_frame = self.findChild(QFrame, "other_monster_scan_frame_" + str(index))
+        other_monster_scan_frame = getattr(self.ui, f"other_monster_scan_frame_{index}")
         # Fetching selected monsters
         checkbox_list = boss_monster_scan_frame.findChildren(QCheckBox)
         monster_list = []
@@ -1282,8 +1325,8 @@ class MainWindow(QMainWindow):
             if checkbox.isChecked():
                 for monster in all_boss_monsters:
                     if monster['preview_name'] == checkbox.text():
-                        combo_box = self.findChild(CheckComboBox,
-                                                   checkbox.objectName().replace("checkbox_", "combobox_"))
+                        # combo_box = self.findChild(CheckComboBox,checkbox.objectName().replace("checkbox_", "combobox_"))
+                        combo_box = self.dynamic_ui[checkbox.objectName().replace("checkbox_", "combobox_")]
                         for combobox_lv in combo_box.checkedIndices():
                             monsters = {}
                             monsters['logic'] = monster['monster_logic_id']
@@ -1306,9 +1349,11 @@ class MainWindow(QMainWindow):
     def getBlackMarketControls(self, index):
 
         # Get buy items selected
-        buy_items_frame = self.findChild(QFrame, "buy_items_frame_" + str(index))
+        # buy_items_frame = self.findChild(QFrame, "buy_items_frame_" + str(index))
+        buy_items_frame = getattr(self.ui, f"buy_items_frame_{index}")
         items = buy_items_frame.findChildren(QCheckBox)
-        refresh_times = self.findChild(QSpinBox, "market_refresh_" + str(index)).value()
+        # refresh_times = self.findChild(QSpinBox, "market_refresh_" + str(index)).value()
+        refresh_times = getattr(self.ui, f"market_refresh_{index}").value()
         all_items = {
             "5M Food": {"name": "5M Food", "file_name": "5m_food.png"},
             "5M Wood": {"name": "5M Wood", "file_name": "5m_wood.png"},
@@ -1340,18 +1385,18 @@ class MainWindow(QMainWindow):
                     if checkbox.isChecked():
                         item_values = all_items[checkbox.text()]
                         item = {"name": item_values["name"], "file_name": item_values["file_name"], "buy_type": {}}
-                        item["buy_type"]["rss"] = self.findChild(QPushButton,
-                                                                 checkbox.objectName().replace("item_",
-                                                                                               "rss_")).isChecked()
-                        item["buy_type"]["gold"] = self.findChild(QPushButton,
-                                                                  checkbox.objectName().replace("item_",
-                                                                                                "gold_")).isChecked()
-                        item["buy_type"]["gems"] = self.findChild(QPushButton,
-                                                                  checkbox.objectName().replace("item_",
-                                                                                                "gem_")).isChecked()
-                        item["buy_type"]["rebuy"] = self.findChild(PyToggle,
-                                                                   checkbox.objectName().replace("item_",
-                                                                                                 "rebuy_")).isChecked()
+                        # item["buy_type"]["rss"] = self.findChild(QPushButton,checkbox.objectName().replace("item_", "rss_")).isChecked()
+                        item["buy_type"]["rss"] = getattr(self.ui,
+                                                          checkbox.objectName().replace("item_", "rss_")).isChecked()
+                        # item["buy_type"]["gold"] = self.findChild(QPushButton,checkbox.objectName().replace("item_","gold_")).isChecked()
+                        item["buy_type"]["gold"] = getattr(self.ui,
+                                                           checkbox.objectName().replace("item_", "gold_")).isChecked()
+                        # item["buy_type"]["gems"] = self.findChild(QPushButton,checkbox.objectName().replace("item_","gem_")).isChecked()
+                        item["buy_type"]["gems"] = getattr(self.ui,
+                                                           checkbox.objectName().replace("item_", "gem_")).isChecked()
+                        # item["buy_type"]["rebuy"] = self.findChild(PyToggle,checkbox.objectName().replace("item_","rebuy_")).isChecked()
+                        item["buy_type"]["rebuy"] = self.dynamic_ui[
+                            checkbox.objectName().replace("item_", "rebuy_")].isChecked()
                         buy_items.append(item)
         except Exception as e:
             print(e)
@@ -1360,7 +1405,8 @@ class MainWindow(QMainWindow):
                                 "items": buy_items}
 
         # Get buy options selection
-        buy_options_frame = self.findChild(QFrame, "buy_options_frame_" + str(index))
+        # buy_options_frame = self.findChild(QFrame, "buy_options_frame_" + str(index))
+        buy_options_frame = getattr(self.ui, f"buy_options_frame_{index}")
         buy_options_list = buy_options_frame.findChildren(QCheckBox)
         for checkbox in buy_options_list:
             if checkbox.isChecked():
@@ -1372,7 +1418,8 @@ class MainWindow(QMainWindow):
 
     def getTroopTrainingControls(self, index):
         try:
-            table = self.findChild(QTableWidget, "troop_queue_table_" + str(index))
+            # table = self.findChild(QTableWidget, "troop_queue_table_" + str(index))
+            table = getattr(self.ui, f"troop_queue_table_{index}")
             military_camp = {"Mounted": "stables.png", "Ranged": "archercamp.png", "Ground": "barracks.png",
                              "Siege": "workshop.png"}
             troops = []
@@ -1388,9 +1435,12 @@ class MainWindow(QMainWindow):
     def getJoinRallyControls(self, index):
         global all_boss_monsters
         # print(all_boss_monsters)
-        logic_one_frame = self.findChild(QFrame, "boss_monster_body_frame_" + str(index))
-        logic_two_frame = self.findChild(QFrame, "event_monster_body_frame_" + str(index))
-        logic_three_frame = self.findChild(QFrame, "event_monster_combo_body_frame_" + str(index))
+        # logic_one_frame = self.findChild(QFrame, "boss_monster_body_frame_" + str(index))
+        logic_one_frame = getattr(self.ui, f"boss_monster_body_frame_{index}")
+        # logic_two_frame = self.findChild(QFrame, "event_monster_body_frame_" + str(index))
+        logic_two_frame = getattr(self.ui, f"event_monster_body_frame_{index}")
+        # logic_three_frame = self.findChild(QFrame, "event_monster_combo_body_frame_" + str(index))
+        logic_three_frame = getattr(self.ui, f"event_monster_combo_body_frame_{index}")
         # Logic 1
         checkbox_list = logic_one_frame.findChildren(QCheckBox)
         join_rally_list = {}
@@ -1409,8 +1459,8 @@ class MainWindow(QMainWindow):
         # Logic 2
         checkbox_list = logic_two_frame.findChildren(QCheckBox)
         for checkbox in checkbox_list:
-            combo_box = self.findChild(CheckComboBox,
-                                       checkbox.objectName().replace("checkbox_", "combobox_"))
+            # combo_box = self.findChild(CheckComboBox,checkbox.objectName().replace("checkbox_", "combobox_"))
+            combo_box = self.dynamic_ui[checkbox.objectName().replace("checkbox_", "combobox_")]
             monsters = None
             # print(checkbox.objectName(), combo_box.objectName())
             # print(combo_box.unCheckedIndices(), combo_box.checkedIndices())#[0, 1, 4] [2, 3]
@@ -1437,8 +1487,8 @@ class MainWindow(QMainWindow):
         # Logic 3
         checkbox_list = logic_three_frame.findChildren(QCheckBox)
         for checkbox in checkbox_list:
-            combo_box = self.findChild(CheckComboBox,
-                                       checkbox.objectName().replace("checkbox_", "combobox_"))
+            # combo_box = self.findChild(CheckComboBox,checkbox.objectName().replace("checkbox_", "combobox_"))
+            combo_box = self.dynamic_ui[checkbox.objectName().replace("checkbox_", "combobox_")]
             monsters = None
             for monster in all_boss_monsters:
                 monster_name = next(
@@ -1454,30 +1504,28 @@ class MainWindow(QMainWindow):
                             monster_list.append(monsters)
         # print(monster_list)
         join_rally_list['monsters'] = monster_list
-        other_settings_groupbox = self.findChild(QGroupBox, "join_rally_other_settings_groupbox_" + str(index))
+        # other_settings_groupbox = self.findChild(QGroupBox, "join_rally_other_settings_groupbox_" + str(index))
+        # other_settings_groupbox = getattr(self.ui, f"join_rally_other_settings_groupbox_{index}")
         try:
-            tmp = {'rotate_preset': other_settings_groupbox.findChild(QComboBox,
-                                                                      "rotate_preset_" + str(index)).currentIndex() + 1,
-                   'auto_use_stamina': other_settings_groupbox.findChild(QCheckBox,
-                                                                         "auto_use_stamina_" + str(index)).isChecked(),
-                   'attempt_preset_with_general': other_settings_groupbox.findChild(QCheckBox,
-                                                                                    "attempt_preset_" + str(
-                                                                                        index)).isChecked()
-                   }
+            tmp = {'rotate_preset': getattr(self.ui, f"rotate_preset_{index}").currentIndex() + 1,
+                   'auto_use_stamina': getattr(self.ui, f"auto_use_stamina_{index}").isChecked(),
+                   'attempt_preset_with_general': getattr(self.ui, f"attempt_preset_{index}").isChecked()}
+            # print(tmp)
         except Exception as e:
             print(e)
         join_rally_list['other_settings'] = tmp
         return join_rally_list
 
     def getPatrolControls(self, index):
-        patrol_groupbox = self.findChild(QGroupBox, "patrol_items_groupBox_" + str(index))
+        # patrol_groupbox = self.findChild(QGroupBox, "patrol_items_groupBox_" + str(index))
+        patrol_groupbox = getattr(self.ui, f"patrol_items_groupBox_{index}")
         checkbox_list = patrol_groupbox.findChildren(QCheckBox)
         patrol_list = []
         for checkbox in checkbox_list:
             if checkbox.isChecked():
                 patrol_list.append(checkbox.text())
-        patrol_controls = {'patrol_gem': self.findChild(QSpinBox, "patrol_gem_" + str(index)).value(),
-                           'refresh_gold': self.findChild(QSpinBox, "refresh_gold_" + str(index)).value(),
+        patrol_controls = {'patrol_gem': getattr(self.ui, f"patrol_gem_{index}").value(),
+                           'refresh_gold': getattr(self.ui, f"refresh_gold_{index}").value(),
                            'patrol_list': patrol_list}
         # print("Patrol Controls: ", patrol_list)
         return patrol_controls
@@ -1490,7 +1538,8 @@ class MainWindow(QMainWindow):
         log = self.sender().log
         emulator_console_txt = "[" + emulator_name + "]" if emulator_name is not None else ""
         emulator_console_txt += "[" + get_date_and_time() + "]: " + log
-        console_emulator = self.findChild(QPlainTextEdit, "emulator_console_" + str(index))
+        # console_emulator = self.findChild(QPlainTextEdit, "emulator_console_" + str(index))
+        console_emulator = getattr(self.ui, f"emulator_console_{index}")
         console_emulator.appendPlainText(emulator_console_txt)
 
     def logEmulatorConsole(self):

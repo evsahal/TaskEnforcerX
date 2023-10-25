@@ -270,10 +270,9 @@ class ConfigurationThread(QThread):
             cultivate = Cultivate(src_img, settings, img_lib_path)
             # print(cultivate.attributes)
             # Stop the program when any of the value reaches 290
-            if any(value.get('org_value', 0) > 290 for value in self.attributes.values()):
+            if any(value.get('org_value', 0) > 290 for value in cultivate.attributes.values()):
                 self.invokeDeviceConsole("One of the attribute value reaches 290. Hence Stopping.")
                 return True
-
             # Validate conditions and press Confirm/Cancel
             if cultivate.validateAttributes():
                 confirm = img.get_template_coordinates(src_img, confirm_cultivate)
@@ -351,7 +350,7 @@ class ConfigurationThread(QThread):
                 # Swipe flag to skip the first swipe to capture the current screen
                 if swipe_flag:
                     self.device_emu.shell(f'input swipe ' + swipe_coordinates[swipe_direction] + ' 1000')
-                    time.sleep(0.3)
+                    time.sleep(1)
                 else:
                     swipe_flag = True
                 # Scanning the SS with the selected items,if location moved on click, redo it the scan map again
