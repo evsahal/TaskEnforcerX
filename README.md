@@ -8,7 +8,7 @@ Before using TaskEnforcerX, you need to install the required libraries and depen
 
 ## Installation
 
-You can download the executable (exe) file of TaskEnforcerX from the following link: [TaskEnforcerX.zip](https://github.com/evsahal/TaskEnforcerX/releases/download/evony/TaskEnforcerX.zip)
+You can download the executable (exe) file of TaskEnforcerX from the following link: [TaskEnforcerX.zip](https://github.com/evsahal/TaskEnforcerX/releases/download/tex_v1.2.0/TEX_v1.2.0.zip)
 
 ## Configuration
 
