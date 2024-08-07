@@ -27,7 +27,7 @@ TaskEnforcerX is licensed under the GNU GENERAL PUBLIC LICENSE Version 3. You ca
 
 ## Demo or Screenshots
 
-![TaskEnforcerX Demo](https://github.com/evsahal/TaskEnforcerX/blob/main/demo.gif)
+![TaskEnforcerX Demo](https://github.com/evsahal/TaskEnforcerX/blob/main/tex.gif)
 
 You can view a demonstration of TaskEnforcerX in action above.
 
